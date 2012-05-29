@@ -31,7 +31,7 @@ module Jimson
          'id'      => 1
         })
         response = MultiJson.encode(BOILERPLATE.merge({'result' => 42}))
-        RestClient.should_receive(:post).with(SPEC_URL, expected, {:content_type => 'application/json'}).and_return(@resp_mock)
+        Faraday.should_receive(:post).with(SPEC_URL, expected, {:content_type => 'application/json'}).and_return(@resp_mock)
         @resp_mock.should_receive(:body).at_least(:once).and_return(response)
         @client = Client.new(SPEC_URL)
       end
@@ -60,7 +60,7 @@ module Jimson
         end
         it "sends a valid JSON-RPC request and returns the result" do
           response = MultiJson.encode(BOILERPLATE.merge({'result' => 42}))
-          RestClient.should_receive(:post).with(SPEC_URL, @expected, {:content_type => 'application/json'}).and_return(@resp_mock)
+          Faraday.should_receive(:post).with(SPEC_URL, @expected, {:content_type => 'application/json'}).and_return(@resp_mock)
           @resp_mock.should_receive(:body).at_least(:once).and_return(response)
           client = Client.new(SPEC_URL)
           client.foo(1,2,3).should == 42
@@ -68,7 +68,7 @@ module Jimson
 
         it "sends a valid JSON-RPC request with custom options" do
           response = MultiJson.encode(BOILERPLATE.merge({'result' => 42}))
-          RestClient.should_receive(:post).with(SPEC_URL, @expected, {:content_type => 'application/json', :timeout => 10000}).and_return(@resp_mock)
+          Faraday.should_receive(:post).with(SPEC_URL, @expected, {:content_type => 'application/json', :timeout => 10000}).and_return(@resp_mock)
           @resp_mock.should_receive(:body).at_least(:once).and_return(response)
           client = Client.new(SPEC_URL, :timeout => 10000)
           client.foo(1,2,3).should == 42
@@ -76,7 +76,7 @@ module Jimson
 
         it "sends a valid JSON-RPC request with custom content_type" do
           response = MultiJson.encode(BOILERPLATE.merge({'result' => 42}))
-          RestClient.should_receive(:post).with(SPEC_URL, @expected, {:content_type => 'application/json-rpc', :timeout => 10000}).and_return(@resp_mock)
+          Faraday.should_receive(:post).with(SPEC_URL, @expected, {:content_type => 'application/json-rpc', :timeout => 10000}).and_return(@resp_mock)
           @resp_mock.should_receive(:body).at_least(:once).and_return(response)
           client = Client.new(SPEC_URL, :timeout => 10000, :content_type => 'application/json-rpc')
           client.foo(1,2,3).should == 42
@@ -101,7 +101,7 @@ module Jimson
         ])
 
         ClientHelper.stub!(:make_id).and_return('1', '2', '5', '9')
-        RestClient.should_receive(:post).with(SPEC_URL, batch, {:content_type => 'application/json'}).and_return(@resp_mock)
+        Faraday.should_receive(:post).with(SPEC_URL, batch, {:content_type => 'application/json'}).and_return(@resp_mock)
         @resp_mock.should_receive(:body).at_least(:once).and_return(response)
         client = Client.new(SPEC_URL)
 

@@ -1,6 +1,6 @@
 require 'blankslate'
 require 'multi_json'
-require 'rest-client'
+require 'faraday'
 require 'jimson/request'
 require 'jimson/response'
 
@@ -43,7 +43,7 @@ module Jimson
         'params'  => args,
         'id'      => self.class.make_id
       })
-      resp = RestClient.post(@url, post_data, @opts)
+      resp = Faraday.post(@url, post_data, @opts)
       if resp.nil? || resp.body.nil? || resp.body.empty?
         raise Client::Error::InvalidResponse.new
       end
@@ -53,7 +53,7 @@ module Jimson
 
     def send_batch_request(batch)
       post_data = MultiJson.encode(batch)
-      resp = RestClient.post(@url, post_data, @opts)
+      resp = Faraday.post(@url, post_data, @opts)
       if resp.nil? || resp.body.nil? || resp.body.empty?
         raise Client::Error::InvalidResponse.new
       end
