@@ -9,3 +9,5 @@ gem 'rake'
 platform :mri_18 do
   gem 'rcov'
 end
+
+gem 'geminabox', :require => false
