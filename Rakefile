@@ -1,7 +1,17 @@
 require 'rubygems'
 require 'rake'
 require 'rspec/core/rake_task'
-require 'bundler/gem_tasks'
+require 'bundler/gem_helper'
+
+class GemInABoxTasks < Bundler::GemHelper
+  protected
+  def rubygem_push(path)
+    sh("gem inabox")
+    Bundler.ui.confirm "Pushed #{name} #{version} to gems.wixpress.com"
+  end
+end
+
+GemInABoxTasks.install_tasks
 
 desc "Run all specs"
 RSpec::Core::RakeTask.new(:rspec) do |spec|
