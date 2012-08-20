@@ -6,6 +6,7 @@ require 'bundler/gem_helper'
 class GemInABoxTasks < Bundler::GemHelper
   protected
   def rubygem_push(path)
+    p name
     sh("gem inabox")
     Bundler.ui.confirm "Pushed #{name} #{version} to gems.wixpress.com"
   end
